@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Prep App</title>
+</head>
+<body>
+
+    <h1 style="text-align: center;">Meal Prep App</h1>
+    <p id="paragraph">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis sequi expedita eligendi est enim. Temporibus culpa maxime labore reprehenderit tempore suscipit quae eligendi, perferendis amet repellat soluta animi enim sit.
+        Fuga, non delectus. Aspernatur quibusdam atque nisi maiores. Voluptates quod porro ducimus dolorum repellat dolores sunt voluptatem maiores at blanditiis aperiam, ullam autem! Tempore qui eveniet, veritatis fugit odio atque?
+        Praesentium delectus animi sapiente iste, dolores, ullam quae hic sed placeat nam sunt nobis! Autem temporibus natus eaque commodi magnam iure nisi ullam ipsam nobis non. Eos natus modi laborum.
+    </p>
+    <button onclick="changeParagraphColour();">
+        Change Paragraph Colour
+    </button>
+
+    <script>
+        function changeParagraphColour() {
+            paragraph = document.getElementById("paragraph");
+            colours = ["red", "orange", "yellow", "green", "blue", "indigo", "violet", "black"];
+            paragraph.style.color = colours[Math.floor(Math.random() * colours.length)];
+        }
+    </script>
+
+</body>
+</html>

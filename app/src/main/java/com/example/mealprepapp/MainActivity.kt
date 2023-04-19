@@ -3,7 +3,6 @@ package com.example.mealprepapp
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Base64
 import android.webkit.WebView
 import android.webkit.WebViewClient
 
@@ -22,12 +21,12 @@ class MainActivity : AppCompatActivity() {
 
         webView.settings.javaScriptEnabled = true
 
-        val webViewData = "<html><body><h1 style=\"text-align: center;\">Hello Alex!</h1></body</html>"
+        val htmlStream = resources.openRawResource(R.raw.index)
 
-        val encodedWebViewData = Base64.encodeToString(webViewData.toByteArray(), Base64.NO_PADDING)
+        val htmlData = htmlStream.readBytes().toString(Charsets.UTF_8)
 
-        webView.loadData(encodedWebViewData,
+        webView.loadData(htmlData,
                          "text/html",
-                         "base64")
+                         "utf-8")
     }
 }
