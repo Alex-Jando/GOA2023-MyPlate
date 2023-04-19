@@ -17,16 +17,36 @@ class MainActivity : AppCompatActivity() {
     private fun setupWebView() {
         val webView: WebView = findViewById(R.id.webview)
 
-        webView.webViewClient = WebViewClient()
+        webView.webViewClient = CustomWebViewClient()
 
         webView.settings.javaScriptEnabled = true
 
-        val htmlStream = resources.openRawResource(R.raw.index)
-
-        val htmlData = htmlStream.readBytes().toString(Charsets.UTF_8)
-
-        webView.loadData(htmlData,
+        loadFileData("index.html")
+    }
+    private fun getAssetData(fileName: String): String {
+        val fileStream = application.assets.open(fileName).bufferedReader()
+        val fileData = fileStream.use {
+            it.readText()
+        }
+        return fileData
+    }
+    private fun loadFileData(fileName: String) {
+        val webView: WebView = findViewById(R.id.webview)
+        val data = getAssetData(fileName)
+        webView.loadData(data,
                          "text/html",
                          "utf-8")
     }
+}
+
+private class CustomWebViewClient : WebViewClient() {
+    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+        return if url.startsWith("App://") {
+            loadFileData(url)
+            false // Allow the WebView to load the URL instead of opening it in a browser
+        } else {
+            true
+        }
+    }
+    
 }
