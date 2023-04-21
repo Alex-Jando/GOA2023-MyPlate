@@ -11,7 +11,7 @@ import androidx.webkit.WebViewClientCompat
 
 class MainActivity : AppCompatActivity() {
 
-    // Local code will be ran, so there is no chance for an XXS attack, and javascript doesn't pose a threat
+    // All JS ran, will be handled by verified by the app, so there shouldn't be any security concerns.
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -39,6 +39,10 @@ private class LocalContentWebViewClient(private val assetLoader: WebViewAssetLoa
         view: WebView,
         request: WebResourceRequest
     ): WebResourceResponse? {
-        return assetLoader.shouldInterceptRequest(request.url)
+        return if (request.url.toString().startsWith("https://appassets.androidplatform.net")) {
+            assetLoader.shouldInterceptRequest(request.url)
+        } else {
+            super.shouldInterceptRequest(view, request)
+        }
     }
 }
