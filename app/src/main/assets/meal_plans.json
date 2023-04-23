@@ -1,0 +1,34 @@
+{
+    "Light Day Meal Plan": [
+        {
+            "Peanut Butter Coconut Protein Smoothie": {
+                "calories": 405.3,
+                "carbs": 26.4,
+                "fat": 19,
+                "protein": 34,
+                "cost": 1.5,
+                "time": 7
+            }
+        },
+        {
+            "Turkey, Probolone, and Sprout Sandwich": {
+                "calories": 557.2,
+                "carbs": 47.3,
+                "fat": 26.3,
+                "protein": 34.6,
+                "cost": 2.06,
+                "time": 10
+            }
+        },
+        {
+            "Chilled Lobster Salad": {
+                "calories": 720,
+                "carbs": 57.3,
+                "fat": 24.8,
+                "protein": 74.3,
+                "cost": 9.72,
+                "time": 15
+            }
+        }
+    ]
+}
