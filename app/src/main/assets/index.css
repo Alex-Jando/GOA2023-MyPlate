@@ -1,76 +1,65 @@
-/* Setup, and CSS reset*/
-
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    height: 100vh;
-    width: 100vw;
-    font-family: 'Rubik', sans-serif;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* Navbar */
-
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 7.5vh;
-    background-color: #fff;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-direction: row;
-}
-
-.nav-btn {
-    background-color: #fff;
-    width: 100%;
-    height: 100%;
-    outline: 1px solid #eee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.selected {
-    background-color: #eee;
-}
-
-.nav-btn svg {
-    width: 80%;
-    height: 80%;
-}
-
 /* Meal Plans */
 
 main {
-    margin-top: 2.5vh;
     height: 100%;
     display: flex;
+    background-color: #fff;
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
 }
 
 .create-plan {
+    margin-top: 2.5vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20%;
+    min-height: 20%;
     width: 90%;
     background-color: #eee;
     border-radius: 1em;
+    font-size: 1em;
+}
+
+.meal-plan {
+    margin-top: 2.5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 20%;
+    width: 90%;
+    background-color: #eee;
+    border-radius: 1em;
+}
+
+.meal-plan h3 {
+    text-align: center;
+    margin-bottom: 0.5em;
+}
+
+.meal-plan p {
+    margin: 0 0.5em;
+    font-size: 0.75em;
+    text-align: center;
+}
+
+.nutrition {
+    margin: 1em 0.5em 0 0.5em;
+    font-size: 0.75em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.nutritional {
+    text-align: center;
+}
+
+.circle {
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    color: red;
 }
