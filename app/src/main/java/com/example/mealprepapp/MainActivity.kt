@@ -51,8 +51,8 @@ class WebAppInterface(private val mContext: Context) {
         return mContext.assets.open(fileName).bufferedReader().use { it.readText() }
     }
     @JavascriptInterface
-    fun saveMealPlans(mealPlans: String): String {
-        return mealPlans
+    fun saveAsset(assetData: String, fileName: String): String {
+        
     }
 }
 

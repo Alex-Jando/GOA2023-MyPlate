@@ -69,3 +69,68 @@ main {
     border-radius: 50%;
     background-color: var(--color);
 }
+
+/* Displaying Meal Plan */
+
+.modal {
+    backdrop-filter: blur(5px);
+    position: fixed;
+    width: inherit;
+    height: inherit;
+}
+
+.modal::before {
+    content: "";
+    position: fixed;
+    width: inherit;
+    height: inherit;
+    background-color: rgba(0, 0, 255, 0.75);
+}
+
+.modal-content {
+    border-radius: 1em;
+    margin: 2em;
+    width: calc(100% - 4em);
+    height: calc(100% - 4em - 7.5vh);
+    position: fixed;
+    overflow: scroll;
+    background-color: white;
+    padding: 0.5em;
+}
+
+.close {
+    margin-top: 1em;
+    font-size: 1rem;
+    height: 1.5em;
+    width: 1.5em;
+    border-radius: 50%;
+    margin-left: calc(50% - 1.5em);
+}
+
+.close:active, .close:hover, .close:focus {
+    background-color: #eee;
+}
+
+.modal-content h2 {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.modal-content h3 {
+    margin: 0.5em 0;
+}
+
+.modal-content h4 {
+    margin: 0.5em 0;
+}
+
+.modal-content ul {
+    list-style-position: inside;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background-color: #eee;
+    margin: 1em 0;
+}
