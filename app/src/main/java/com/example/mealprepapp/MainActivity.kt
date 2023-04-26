@@ -1,7 +1,6 @@
 package com.example.mealprepapp
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,7 +11,6 @@ import android.webkit.WebView
 import android.widget.Toast
 import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewClientCompat
-import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,7 +50,7 @@ class WebAppInterface(private val mContext: Context) {
     }
     @JavascriptInterface
     fun saveAsset(assetData: String, fileName: String): String {
-        
+        return ""
     }
 }
 

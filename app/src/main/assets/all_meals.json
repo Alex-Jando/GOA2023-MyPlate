@@ -1,3 +1,68 @@
-{
-    
-}
+[
+    {
+        "Peanut Butter Coconut Protein Smoothie": {
+            "calories": 405.3,
+            "carbs": 26.4,
+            "fat": 19,
+            "protein": 34,
+            "cost": 1.5,
+            "time": 7,
+            "recipe": "Make Peanut Butter Coconut Protein Smoothie"
+        }
+    },
+    {
+        "Turkey, Probolone, and Sprout Sandwich": {
+            "calories": 557.2,
+            "carbs": 47.3,
+            "fat": 26.3,
+            "protein": 34.6,
+            "cost": 2.06,
+            "time": 10,
+            "recipe": "Make Turkey, Probolone, and Sprout Sandwich"
+        }
+    },
+    {
+        "Chilled Lobster Salad": {
+            "calories": 720,
+            "carbs": 57.3,
+            "fat": 24.8,
+            "protein": 74.3,
+            "cost": 9.72,
+            "time": 15,
+            "recipe": "Make Chilled Lobster Salad"
+        }
+    },
+    {
+        "Ham and Cheese Egg Dunkers": {
+            "calories": 726.4,
+            "carbs": 65.8,
+            "fat": 32.6,
+            "protein": 40.3,
+            "cost": 1.51,
+            "time": 14,
+            "recipe": "Make Ham and Cheese Egg Dunkers"
+        }
+    },
+    {
+        "Yogurt Chocolate Banana Shake": {
+            "calories": 848.7,
+            "carbs": 71,
+            "fat": 40,
+            "protein": 54.7,
+            "cost": 3.5,
+            "time": 5,
+            "recipe": "Make Yogurt Chocolate Banana Shake"
+        }
+    },
+    {
+        "Thousand Island Slaw with Chicken": {
+            "calories": 1010.3,
+            "carbs": 61.7,
+            "fat": 60.3,
+            "protein": 53.9,
+            "cost": 1.91,
+            "time": 20,
+            "recipe": "Make Thousand Island Slaw with Chicken"
+        }
+    }
+]
