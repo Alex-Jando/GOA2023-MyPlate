@@ -13,6 +13,39 @@
 
         <h1>Settings</h1>
 
+        <div class="divider"></div>
+
+        <h3>Age (years): </h3>
+        
+        <input type="number" id="age-input">
+
+        <div class="divider"></div>
+
+        <h3>Height (cm): </h3>
+
+        <input type="number" id="height-input">
+
+        <div class="divider"></div>
+
+        <h3>Weight (kg): </h3>
+
+        <input type="number" id="weight-input">
+
+        <div class="divider"></div>
+
+        <h3>Gender: </h3>
+
+        <div class="toggle">
+
+            <label class="switch">
+                <input type="checkbox" id="gender-input" checked>
+                <span class="slider round"></span>
+            </label>
+
+        </div>
+
+        <button id="save-settings" onclick="saveSettings();">Save</button>
+
     </main>
 
     <nav class="bottom-nav">

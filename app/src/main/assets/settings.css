@@ -1,0 +1,55 @@
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 4em;
+    height: 2.25em;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ffc0cb;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "F";
+    display: grid;
+    place-content: center;
+    height: 1.75em;
+    width: 1.75em;
+    left: 0.25em;
+    bottom: 0.25em;
+    background-color: white;
+    transition: .4s;
+}
+
+.switch input:checked + .slider {
+    background-color: #6ca0dc;
+}
+
+.switch input:checked + .slider:before {
+    content: 'M';
+    transform: translateX(1.75em);
+}
+
+.slider.round {
+    border-radius: 2.25em;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}

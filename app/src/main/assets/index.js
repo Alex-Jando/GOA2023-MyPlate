@@ -4,7 +4,7 @@ function appToast(toast) {
 
 function showMealPlan(meal_plan_name) {
 
-    meal_plans = JSON.parse(app.getAsset('meal_plans.json'));
+    meal_plans = JSON.parse(app.getLocalFile('meal_plans.json'));
 
     meal_plan_modal = `<div class="modal"><div class="modal-content"><h2>${meal_plan_name}<div class="close" onclick="closeModal()">✕</div></h2><div class="divider"></div>`;
 
@@ -32,7 +32,7 @@ function closeModal() {
 };
 
 function loadMeals(){
-    meal_plans = JSON.parse(app.getAsset('meal_plans.json'));
+    meal_plans = JSON.parse(app.getLocalFile('meal_plans.json'));
 
     Object.keys(meal_plans).forEach(meal_plan_name => {
         meal_plan_div = `<div class="meal-plan" onclick="showMealPlan('${meal_plan_name}');"><h3>${meal_plan_name}</h3><p>`;

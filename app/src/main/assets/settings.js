@@ -1,3 +1,7 @@
+function saveSettings() {
+    console.log($('#gender-input'));
+}
+
 $(function(){
 
     touchstartX = 0;
