@@ -8,20 +8,20 @@ function calculateBMR(age, height, weight, pal, is_male) {
         bmr = 66.5 + (13.75 * weight * 0.453592) + (5.003 * height) - (6.75 * age);
 
         switch (pal) {
-            case(0):
+            case(1):
                 tee = bmr * 1.2;
                 break;
             
-            case(1 || 2):
+            case(2 || 3):
                 tee = bmr * 1.375;
                 break;
-            case(3 || 4 || 5):
+            case(4 || 5):
                 tee = bmr * 1.55;
                 break;
-            case(6 || 7):
+            case(6 || 7 || 8):
                 tee = bmr * 1.725;
                 break;
-            case(8):
+            case(9 || 10):
                 tee = bmr * 1.9;
                 break;
             default:
@@ -34,27 +34,28 @@ function calculateBMR(age, height, weight, pal, is_male) {
         bmr = 655.1 + (9.563 * weight * 0.453592) + (1.85 * height) - (4.676 * age);
 
         switch (pal) {
-            case(0):
+            case(1):
                 tee = bmr * 1.2;
                 break;
             
-            case(1 || 2):
+            case(2 || 3):
                 tee = bmr * 1.375;
                 break;
-            case(3 || 4 || 5):
+            case(4 || 5):
                 tee = bmr * 1.55;
                 break;
-            case(6 || 7):
+            case(6 || 7 || 8):
                 tee = bmr * 1.725;
                 break;
-            case(8):
+            case(9 || 10):
                 tee = bmr * 1.9;
                 break;
             
         }
     }
 
-    return bmr;
+    return [bmr, tee];
+    
 
 };
 
@@ -67,7 +68,8 @@ function getBMR(){
 
     bmr = calculateBMR(age, height, weight, pal, is_male);
 
-    $('#result').html(`BMR: ${bmr}`)
+    $('#resultBMR').html(`BMR: ${bmr[0]}`)
+    $('#resultTEE').html(`TEE: ${bmr[1]}`)
 }
 
 $(function(){
