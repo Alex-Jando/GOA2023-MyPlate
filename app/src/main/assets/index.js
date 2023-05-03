@@ -32,6 +32,7 @@ function closeModal() {
 };
 
 function loadMeals(){
+
     meal_plans = JSON.parse(app.getLocalFile('meal_plans.json'));
 
     Object.keys(meal_plans).forEach(meal_plan_name => {
@@ -60,6 +61,12 @@ function loadMeals(){
 };
 
 $(function(){
+
+    console.log(app.getLocalFile('meal_plans.json'));
+
+    x = app.getLocalFile('meal_plans.json');
+
+    console.log(x);
 
     touchstartX = 0;
     touchendX = 0;
