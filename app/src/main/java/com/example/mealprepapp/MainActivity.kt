@@ -26,24 +26,6 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        createLocalFiles()
-        
-        val webView: WebView = findViewById(R.id.webview)
-
-        webView.settings.javaScriptEnabled = true
-
-        webView.addJavascriptInterface(WebAppInterface(this), "app")
-
-        val assetLoader = WebViewAssetLoader.Builder()
-                        .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(this))
-                        .addPathHandler("/res/", WebViewAssetLoader.ResourcesPathHandler(this))
-                        .build()
-
-        webView.webViewClient = LocalContentWebViewClient(assetLoader)
-
-        webView.loadUrl("https://appassets.androidplatform.net/assets/index.html")
-    }
-    private fun createLocalFiles() {
         val path = applicationContext.filesDir
 
         val mealPlansFile = File(path, "meal_plans.json")
@@ -59,6 +41,21 @@ class MainActivity : AppCompatActivity() {
             val writer = FileOutputStream(settingsFile)
             writer.write("{}".toByteArray())
         }
+        
+        val webView: WebView = findViewById(R.id.webview)
+
+        webView.settings.javaScriptEnabled = true
+
+        webView.addJavascriptInterface(WebAppInterface(this), "app")
+
+        val assetLoader = WebViewAssetLoader.Builder()
+                        .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(this))
+                        .addPathHandler("/res/", WebViewAssetLoader.ResourcesPathHandler(this))
+                        .build()
+
+        webView.webViewClient = LocalContentWebViewClient(assetLoader)
+
+        webView.loadUrl("https://appassets.androidplatform.net/assets/index.html")
     }
 }
 

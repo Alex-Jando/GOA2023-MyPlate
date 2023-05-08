@@ -38,33 +38,74 @@ main {
 
 .bottom-nav {
     background-color: transparent;
+    height: 7.5vh;
+    width: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 7.5vh;
-    background-color: #fff;
     display: flex;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: flex-end;
     flex-direction: row;
 }
 
 .nav-btn {
-    background-color: #fff;
-    width: 100%;
-    height: 100%;
-    border-top: 1px solid #eee;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.selected {
-    background-color: #eee;
+    height: 5vh;
+    width: 5vh;
+    z-index: 10;
+    background-color: transparent;
+    margin-bottom: 1.5vh;
 }
 
 .nav-btn svg {
-    width: 80%;
-    height: 80%;
+    height: 70%;
+    width: 70%;
+    fill: #3C87F8;
+}
+
+.selected {
+    transform: translateY(-75%);
+    background-color: #3C87F8;
+    z-index: 2;
+}
+
+.selected svg {
+    fill: #fff;
+}
+
+.selected::after {
+    content: '';
+    height: 7.5vh;
+    width: 7.5vh;
+    border-radius: 50%;
+    background-color: transparent;
+    position: absolute;
+    box-shadow: 0 calc(100vw + 3.5vh) 0 100vw rgba(159, 215, 247, 0.6);
+}
+
+@media screen and (orientation:landscape) {
+    .nav-bottom {
+        height: 20vh;
+    }
+
+    .nav-btn {
+        height: 15vh;
+        width: 15vh;
+        margin-bottom: 2.5vh;
+    }
+
+    .selected::after {
+        height: 20vh;
+        width: 20vh;
+        box-shadow: 0 calc(100vw + 10vh) 0 100vw rgba(159, 215, 247, 0.6);
+    }
+
+    .selected {
+        transform: translateY(-75%);
+    }
 }

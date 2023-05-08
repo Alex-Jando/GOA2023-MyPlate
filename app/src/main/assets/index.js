@@ -6,6 +6,8 @@ function showMealPlan(meal_plan_name) {
 
     meal_plans = JSON.parse(app.getLocalFile('meal_plans.json'));
 
+    meal_plans = {}
+
     meal_plan_modal = `<div class="modal"><div class="modal-content"><h2>${meal_plan_name}<div class="close" onclick="closeModal()">✕</div></h2><div class="divider"></div>`;
 
     meal_plans[meal_plan_name].forEach(meal => {
@@ -61,12 +63,6 @@ function loadMeals(){
 };
 
 $(function(){
-
-    console.log(app.getLocalFile('meal_plans.json'));
-
-    x = app.getLocalFile('meal_plans.json');
-
-    console.log(x);
 
     touchstartX = 0;
     touchendX = 0;
