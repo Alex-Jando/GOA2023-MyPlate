@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             writer.write("{}".toByteArray())
         }
         
-        val webView: WebView = findViewById(R.id.webview)
+        val webView: WebView = findViewById(R.id.WebView)
 
         webView.settings.javaScriptEnabled = true
 
