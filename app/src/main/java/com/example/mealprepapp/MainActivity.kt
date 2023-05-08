@@ -11,6 +11,10 @@ import android.webkit.WebView
 import android.widget.Toast
 import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewClientCompat
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+
+        createLocalFiles()
         
         val webView: WebView = findViewById(R.id.webview)
 
@@ -37,6 +43,23 @@ class MainActivity : AppCompatActivity() {
 
         webView.loadUrl("https://appassets.androidplatform.net/assets/index.html")
     }
+    private fun createLocalFiles() {
+        val path = applicationContext.filesDir
+
+        val mealPlansFile = File(path, "meal_plans.json")
+        if (!mealPlansFile.exists()) {
+            mealPlansFile.createNewFile()
+            val writer = FileOutputStream(mealPlansFile)
+            writer.write("{}".toByteArray())
+        }
+
+        val settingsFile = File(path, "settings.json")
+        if (!settingsFile.exists()) {
+            settingsFile.createNewFile()
+            val writer = FileOutputStream(settingsFile)
+            writer.write("{}".toByteArray())
+        }
+    }
 }
 
 class WebAppInterface(private val mContext: Context) {
@@ -49,8 +72,16 @@ class WebAppInterface(private val mContext: Context) {
         return mContext.assets.open(fileName).bufferedReader().use { it.readText() }
     }
     @JavascriptInterface
-    fun saveAsset(assetData: String, fileName: String): String {
-        return ""
+    fun getLocalFile(fileName: String): String {
+        val path = mContext.filesDir
+        val reader = FileInputStream(File(path, fileName))
+        return reader.bufferedReader().use { it.readText() }
+    }
+    @JavascriptInterface
+    fun saveLocalFile(fileData: String, fileName: String) {
+        val path = mContext.filesDir
+        val writer = FileOutputStream(File(path, fileName))
+        writer.write(fileData.toByteArray())
     }
 }
 

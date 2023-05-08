@@ -64,6 +64,15 @@ function calculateBMR(age, height, weight, pal, is_male) {
 
 };
 
+function calculateBMI(height, weight) {
+
+    return weight / (height * height);
+
+
+
+
+};
+
 function getBMR(){
     age = Number($('#age').val());
     height = Number($('#height').val());
