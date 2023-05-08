@@ -108,4 +108,8 @@ main {
     .selected {
         transform: translateY(-75%);
     }
+
+    main {
+        padding-bottom: 25vh;
+    }
 }
