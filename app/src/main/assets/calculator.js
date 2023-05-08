@@ -116,6 +116,11 @@ $(function(){
 
     settings = JSON.parse(app.getLocalFile('settings.json'));
 
+    if (settings.age <= 0 || settings.height <= 0 || settings.weight <= 0) {
+        app.showToast('Please fill in your settings first!')
+        window.location.href = '/assets/settings.html';
+    }
+
     $('#bmr-1').html(`Activity Level 1: ${calculateBMR(settings.age, settings.height, settings.weight, 1, settings.is_male).toFixed(2)} kcal`)
     $('#bmr-2').html(`Activity Level 2: ${calculateBMR(settings.age, settings.height, settings.weight, 2, settings.is_male).toFixed(2)} kcal`)
     $('#bmr-3').html(`Activity Level 3: ${calculateBMR(settings.age, settings.height, settings.weight, 3, settings.is_male).toFixed(2)} kcal`)
