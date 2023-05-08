@@ -30,7 +30,7 @@ function calculateBMR(age, height, weight, pal, is_male) {
                 tee = bmr * 1.9;
                 break;
             default:
-                tee=1;
+                tee = 1;
                 break;
         }
 
@@ -40,22 +40,16 @@ function calculateBMR(age, height, weight, pal, is_male) {
             case(1):
                 tee = bmr * 1.2;
                 break;
-            
             case(2):
-            case(3):
                 tee = bmr * 1.375;
                 break;
-            case(4):
-            case(5): 
+            case(3): 
                 tee = bmr * 1.55;
                 break;
-            case(6):
-            case(7):
-            case(8):
+            case(4):
                 tee = bmr * 1.725;
                 break;
-            case(9):
-            case(10):
+            case(5):
                 tee = bmr * 1.9;
                 break;
             default:
@@ -65,31 +59,36 @@ function calculateBMR(age, height, weight, pal, is_male) {
         }
     }
 
-    return [bmr, tee];
+    return bmr * tee / 1000;
     
 
 };
 
 function calculateBMI(height, weight) {
 
-    return weight / (height * height);
-
-
-
+    return weight / ((height / 100) * (height / 100));
 
 };
 
-function getBMR(){
-    age = Number($('#age').val());
-    height = Number($('#height').val());
-    weight = Number($('#weight').val());
-    pal = Number($('#pal').val());
-    is_male = Boolean($('#is_male').val());
+function calculateBFP(height, weight, age) {
+    return 1.2 * calculateBMI(height, weight) + 0.23 * age - 16.2;
+};
 
-    bmr = calculateBMR(age, height, weight, pal, is_male);
+function calculateBLP(height, weight, age) {
+    return 100 - calculateBFP(height, weight, age);
+}
 
-    $('#resultBMR').html(`BMR: ${bmr[0]}`)
-    $('#resultTEE').html(`TEE: ${bmr[1]}`)
+function calculateMP(height, weight, age) {
+    switch (true) {
+        case (age <= 35):
+            return 0.42 * calculateBLP(height, weight, age);
+        case (age <= 55):
+            return 0.38 * calculateBLP(height, weight, age);
+        case (age <= 75):
+            return 0.33 * calculateBLP(height, weight, age);
+        default:
+            return 0.31 * calculateBLP(height, weight, age);
+    }
 }
 
 $(function(){
@@ -115,6 +114,20 @@ $(function(){
         checkDirection();
     })
 
+    settings = JSON.parse(app.getLocalFile('settings.json'));
 
+    $('#bmr-1').html(`Activity Level 1: ${calculateBMR(settings.age, settings.height, settings.weight, 1, settings.is_male).toFixed(2)} kcal`)
+    $('#bmr-2').html(`Activity Level 2: ${calculateBMR(settings.age, settings.height, settings.weight, 2, settings.is_male).toFixed(2)} kcal`)
+    $('#bmr-3').html(`Activity Level 3: ${calculateBMR(settings.age, settings.height, settings.weight, 3, settings.is_male).toFixed(2)} kcal`)
+    $('#bmr-4').html(`Activity Level 4: ${calculateBMR(settings.age, settings.height, settings.weight, 4, settings.is_male).toFixed(2)} kcal`)
+    $('#bmr-5').html(`Activity Level 5: ${calculateBMR(settings.age, settings.height, settings.weight, 5, settings.is_male).toFixed(2)} kcal`)
+
+    $('#bmi-val').html(`Body Mass Index: ${calculateBMI(settings.height, settings.weight).toFixed(2)}`)
+
+    $('#blp-val').html(`Body Lean Percentage: ${(calculateBLP(settings.height, settings.weight, settings.age)).toFixed(2)}%`)
+
+    $('#bfp-val').html(`Body Fat Percentage: ${(calculateBFP(settings.height, settings.weight, settings.age)).toFixed(2)}%`)
+
+    $('#mp-val').html(`Muscle Percentage: ${(calculateMP(settings.height, settings.weight, settings.age)).toFixed(2)}%`)
 
 });
