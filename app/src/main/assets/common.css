@@ -85,7 +85,7 @@ main {
     border-radius: 50%;
     background-color: transparent;
     position: absolute;
-    box-shadow: 0 calc(100vw + 3.5vh) 0 100vw rgba(159, 215, 247, 0.6);
+    box-shadow: 0 calc(100vw + 3.5vh) 0 100vw rgba(159, 215, 247, 1);
 }
 
 @media screen and (orientation:landscape) {
@@ -102,7 +102,7 @@ main {
     .selected::after {
         height: 20vh;
         width: 20vh;
-        box-shadow: 0 calc(100vw + 10vh) 0 100vw rgba(159, 215, 247, 0.6);
+        box-shadow: 0 calc(100vw + 10vh) 0 100vw rgba(159, 215, 247, 1);
     }
 
     .selected {

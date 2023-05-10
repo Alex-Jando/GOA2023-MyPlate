@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             val writer = FileOutputStream(settingsFile)
             writer.write("{}".toByteArray())
         }
-        
+
         val webView: WebView = findViewById(R.id.WebView)
 
         webView.settings.javaScriptEnabled = true
