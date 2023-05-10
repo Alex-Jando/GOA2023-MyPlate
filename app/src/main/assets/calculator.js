@@ -129,7 +129,7 @@ $(function(){
 
     $('#bmi-val').html(`Body Mass Index: ${calculateBMI(settings.height, settings.weight).toFixed(2)}`)
 
-    $('#blp-val').html(`Body Lean Percentage: ${(calculateBLP(settings.height, settings.weight, settings.age)).toFixed(2)}%`)
+    $('#blp-val').html(`Lean Percentage: ${(calculateBLP(settings.height, settings.weight, settings.age)).toFixed(2)}%`)
 
     $('#bfp-val').html(`Body Fat Percentage: ${(calculateBFP(settings.height, settings.weight, settings.age)).toFixed(2)}%`)
 

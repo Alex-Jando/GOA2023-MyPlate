@@ -2,13 +2,61 @@ function appToast(toast) {
     app.showToast(toast);
 };
 
+function showCreateMealPlan() {
+
+    bmr = 1600 // calculateBMR();
+
+    $('main').prepend(`<div class="modal">
+        <div class="modal-content-create-plan">
+            <h2>Create A Meal Plan<div class="close" onclick="closeModal()">✕</div></h2>
+
+            <label for="activity">Activity Level: 1 (1-5)</label>
+            <input type="number" name="activity" id="activity" class="input-number">
+
+            <button onclick="app.showToast('Feature Not Yet Implemented');">Apply</button>
+
+            <ul id="recommended">
+                <li>BMR: ${bmr}</li>
+                <li>Recommended Fat: ${(bmr*0.2/9).toFixed(2)}g-${(bmr*0.35/9).toFixed(2)}g</li>
+                <li>Recommended Protein: ${(bmr*0.1/4).toFixed(2)}g-${(bmr*0.35/4).toFixed(2)}g</li>
+                <li>Recommended Carbs: ${(bmr*0.45/4).toFixed(2)}g-${(bmr*0.65/4).toFixed(2)}g</li>
+            </ul>
+
+            <label for="calories">Desired Calories</label>
+            <input type="number" name="calories" id="calories" class="input-number">
+
+            <label for="fat">Desired Fat (grams)</label>
+            <input type="number" name="fat" id="fat" class="input-number">
+
+            <label for="protein">Desired Protein</label>
+            <input type="number" name="protein" id="protein" class="input-number">
+
+            <label for="carb">Desired Carbs</label>
+            <input type="number" name="carb" id="carb" class="input-number">
+
+            <h3>Dietary Restrictions</h3>
+
+            <ul>
+                <li><input type="checkbox" name="vegan" id="vegan"> Vegan</li>
+                <li><input type="checkbox" name="vegetarian" id="vegetarian"> Vegetarian</li>
+                <li><input type="checkbox" name="seafood" id="seafood"> Seafood</li>
+                <li><input type="checkbox" name="nuts" id="nuts"> Nuts</li>
+                <li><input type="checkbox" name="lactose" id="lactose"> Lactose</li>
+            </ul>
+
+            <button onclick="app.showToast('Feature Not Yet Implemented');">Calculate</button>
+
+        </div>
+    </div>`);
+}
+
 function showMealPlan(meal_plan_name) {
 
     meal_plans = JSON.parse(app.getLocalFile('meal_plans.json'));
 
     meal_plans = {}
 
-    meal_plan_modal = `<div class="modal"><div class="modal-content"><h2>${meal_plan_name}<div class="close" onclick="closeModal()">✕</div></h2><div class="divider"></div>`;
+    meal_plan_modal = `<div class="modal"><div class="modal-content-show-plan"><h2>${meal_plan_name}<div class="close" onclick="closeModal()">✕</div></h2><div class="divider"></div>`;
 
     meal_plans[meal_plan_name].forEach(meal => {
         meal_plan_modal += `<h3>${Object.keys(meal)[0]}</h3><ul>

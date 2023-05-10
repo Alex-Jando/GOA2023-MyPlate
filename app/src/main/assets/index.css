@@ -87,7 +87,7 @@ main {
     background-color: rgba(0, 200, 255, 0.75);
 }
 
-.modal-content {
+.modal-content-show-plan, .modal-content-create-plan {
     border-radius: 1em;
     margin: 2em;
     width: calc(100% - 4em);
@@ -96,6 +96,8 @@ main {
     overflow: scroll;
     background-color: white;
     padding: 0.5em;
+    display: flex;
+    flex-direction: column;
 }
 
 .close {
@@ -111,20 +113,20 @@ main {
     background-color: #eee;
 }
 
-.modal-content h2 {
+.modal-content-show-plan h2 {
     margin-bottom: 1em;
     text-align: center;
 }
 
-.modal-content h3 {
+.modal-content-show-plan h3 {
     margin: 0.5em 0;
 }
 
-.modal-content h4 {
+.modal-content-show-plan h4 {
     margin: 0.5em 0;
 }
 
-.modal-content ul {
+.modal-content-show-plan ul {
     list-style-position: inside;
 }
 
@@ -133,4 +135,64 @@ main {
     height: 1px;
     background-color: #eee;
     margin: 1em 0;
+}
+
+/* Create A Plan */
+
+.input-number {
+    margin: 0.25em;
+    width: 60%;
+    border: none;
+    outline: 2px solid #eee;
+    text-align: right;
+    font-size: 1em;
+    border-radius: 0.75em;
+    padding: 0.25em;
+    align-self: center;
+}
+
+.input-number:focus, .input-number:hover {
+    outline: 3px solid #ccc;
+}
+
+.modal-content-create-plan h2 {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.modal-content-create-plan h3 {
+    margin: 1em 0;
+    text-align: center;
+}
+
+.modal-content-create-plan ul {
+    list-style-position: inside;
+    list-style-type: none;
+    margin: 1em 0;
+}
+
+.modal-content-create-plan li {
+    margin-bottom: 1em;
+}
+
+.modal-content-create-plan button {
+    padding: 0.75em;
+    width: 10em;
+    border-radius: 1.5em;
+    align-self: center;
+    display: block;
+    margin: 0.5em;
+}
+
+.modal-content-create-plan label {
+    text-align: center;
+    margin: 1em 0;
+    display: block;
+}
+
+@media screen and (orientation:landscape) {
+    .modal-content-show-plan, .modal-content-create-plan {
+        width: calc(100% - 4em);
+        height: calc(100% - 4em - 20vh);
+    }       
 }
