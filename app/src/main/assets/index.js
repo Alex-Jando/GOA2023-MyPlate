@@ -2,9 +2,132 @@ function appToast(toast) {
     app.showToast(toast);
 };
 
+function calculateBMR(age, height, weight, pal, is_male) {
+
+    bmr = 0;
+    tee = 0;
+
+    if (is_male) {
+
+        bmr = 10 * weight + 6.25 * height - 5 * age + 5
+
+        switch (pal) {
+            case(1):
+                tee = bmr * 1.2;
+                break;
+            
+            case(2):
+                tee = bmr * 1.375;
+                break;
+            case(3): 
+                tee = bmr * 1.55;
+                break;
+            case(4):
+                tee = bmr * 1.725;
+                break;
+            case(5):
+                tee = bmr * 1.9;
+                break;
+            default:
+                tee = bmr;
+                break;
+        }
+
+    } else {
+        bmr = 10 * weight + 6.25 * height - 5 * age - 161
+        switch (pal) {
+        case(1):
+            tee = bmr * 1.2;
+            break;
+        
+        case(2):
+            tee = bmr * 1.375;
+            break;
+        case(3):
+            tee = bmr * 1.55;
+            break;
+        case(4):
+            tee = bmr * 1.725;
+            break;
+        case(5):
+            tee = bmr * 1.9;
+            break;
+        default:
+            
+        }
+    }
+
+    return tee;
+    
+};
+
+function calculateMealPlan() {
+    meal_plan_stats = {
+        calories: Number($('#calories').val()),
+        fat: Number($('#fat').val()),
+        protein: Number($('#protein').val()),
+        carb: Number($('#carb').val()),
+        restrictions: {
+            vegan: $('#vegan').is(':checked'),
+            vegetarian: $('#vegetarian').is(':checked'),
+            seafood: $('#seafood').is(':checked'),
+            nuts: $('#nuts').is(':checked'),
+            lactose: $('#lactose').is(':checked')
+        }
+    }
+
+    all_meal_plans = JSON.parse(app.getAsset('all_meals.json'));
+
+    all_valid_meals = [];
+
+    all_meal_plans.forEach(meal_plan => {
+        allergens = meal_plan[Object.keys(meal_plan)[0]].allergens
+        contains_allergen = false;
+        allergens.forEach(allergen => {
+            if (meal_plan_stats.restrictions[allergen]) {
+                contains_allergen = true;
+            }
+        });
+        if (!contains_allergen) {
+            all_valid_meals.push(meal_plan);
+        }
+    });
+
+    // Get all permutations of valid meals
+
+    // Generate an accuracy score for each permutation
+
+    // Return the permutations in order of accuracy score
+
+}
+
+function setActivityLevel() {
+    lvl = Number($('#activity').val());
+
+    if (lvl > 5 || lvl < 1) {
+
+        app.showToast('Activity Level Must Be Between 1 and 5');
+
+        return;
+
+    }
+
+    settings = JSON.parse(app.getLocalFile('settings.json'));
+
+    bmr = calculateBMR(settings.age, settings.height, settings.weight, lvl, settings.is_male).toFixed(2);
+
+    $('#recommended').html(`<li>BMR: <span class="stat">${bmr}</span></li>
+    <li>Recommended Fat: <span class="stat">${(bmr*0.2/9).toFixed(2)}g-${(bmr*0.35/9).toFixed(2)}g</span></li>
+    <li>Recommended Protein: <span class="stat">${(bmr*0.1/4).toFixed(2)}g-${(bmr*0.35/4).toFixed(2)}g</span></li>
+    <li>Recommended Carbs: <span class="stat">${(bmr*0.45/4).toFixed(2)}g-${(bmr*0.65/4).toFixed(2)}g</span></li>`);
+
+}
+
 function showCreateMealPlan() {
 
-    bmr = 1600 // calculateBMR();
+    settings = JSON.parse(app.getLocalFile('settings.json'));
+
+    bmr = calculateBMR(settings.age, settings.height, settings.weight, 1, settings.is_male).toFixed(2);
 
     $('main').prepend(`<div class="modal">
         <div class="modal-content-create-plan">
@@ -13,13 +136,13 @@ function showCreateMealPlan() {
             <label for="activity">Activity Level: 1 (1-5)</label>
             <input type="number" name="activity" id="activity" class="input-number">
 
-            <button onclick="app.showToast('Feature Not Yet Implemented');">Apply</button>
+            <button onclick="setActivityLevel();">Apply</button>
 
-            <ul id="recommended">
-                <li>BMR: ${bmr}</li>
-                <li>Recommended Fat: ${(bmr*0.2/9).toFixed(2)}g-${(bmr*0.35/9).toFixed(2)}g</li>
-                <li>Recommended Protein: ${(bmr*0.1/4).toFixed(2)}g-${(bmr*0.35/4).toFixed(2)}g</li>
-                <li>Recommended Carbs: ${(bmr*0.45/4).toFixed(2)}g-${(bmr*0.65/4).toFixed(2)}g</li>
+            <ul id="recommended" class="stat-list">
+                <li>BMR: <span class="stat">${bmr}</span></li>
+                <li>Recommended Fat: <span class="stat">${(bmr*0.2/9).toFixed(2)}g-${(bmr*0.35/9).toFixed(2)}g</span></li>
+                <li>Recommended Protein: <span class="stat">${(bmr*0.1/4).toFixed(2)}g-${(bmr*0.35/4).toFixed(2)}g</span></li>
+                <li>Recommended Carbs: <span class="stat">${(bmr*0.45/4).toFixed(2)}g-${(bmr*0.65/4).toFixed(2)}g</span></li>
             </ul>
 
             <label for="calories">Desired Calories</label>
@@ -28,10 +151,10 @@ function showCreateMealPlan() {
             <label for="fat">Desired Fat (grams)</label>
             <input type="number" name="fat" id="fat" class="input-number">
 
-            <label for="protein">Desired Protein</label>
+            <label for="protein">Desired Protein (grams)</label>
             <input type="number" name="protein" id="protein" class="input-number">
 
-            <label for="carb">Desired Carbs</label>
+            <label for="carb">Desired Carbs (grams)</label>
             <input type="number" name="carb" id="carb" class="input-number">
 
             <h3>Dietary Restrictions</h3>
@@ -44,7 +167,7 @@ function showCreateMealPlan() {
                 <li><input type="checkbox" name="lactose" id="lactose"> Lactose</li>
             </ul>
 
-            <button onclick="app.showToast('Feature Not Yet Implemented');">Calculate</button>
+            <button onclick="calculateMealPlan();">Calculate</button>
 
         </div>
     </div>`);

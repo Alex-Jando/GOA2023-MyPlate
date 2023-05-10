@@ -166,9 +166,16 @@ main {
 }
 
 .modal-content-create-plan ul {
-    list-style-position: inside;
     list-style-type: none;
     margin: 1em 0;
+}
+
+.modal-content-create-plan .stat-list {
+    text-align: center;
+}
+
+.modal-content-create-plan .stat-list li {
+    font-size: 1.5em;
 }
 
 .modal-content-create-plan li {
@@ -188,6 +195,11 @@ main {
     text-align: center;
     margin: 1em 0;
     display: block;
+}
+
+.stat {
+    display: block;
+    font-size: 0.75em;
 }
 
 @media screen and (orientation:landscape) {
