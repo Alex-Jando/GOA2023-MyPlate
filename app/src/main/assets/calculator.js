@@ -5,7 +5,7 @@ function calculateBMR(age, height, weight, pal, is_male) {
 
     if (is_male) {
 
-        bmr = 66.5 + (13.75 * weight * 0.453592) + (5.003 * height) - (6.75 * age);
+        bmr = 10 * weight + 6.25 * height - 5 * age + 5
 
         switch (pal) {
             case(1):
@@ -35,31 +35,35 @@ function calculateBMR(age, height, weight, pal, is_male) {
         }
 
     } else {
-
+        bmr = 10 * weight + 6.25 * height - 5 * age - 161
         switch (pal) {
             case(1):
-                tee = bmr * 1.2;
-                break;
-            case(2):
-                tee = bmr * 1.375;
-                break;
-            case(3): 
-                tee = bmr * 1.55;
-                break;
-            case(4):
-                tee = bmr * 1.725;
-                break;
-            case(5):
-                tee = bmr * 1.9;
-                break;
-            default:
-                tee=1;
-                break;
+            tee = bmr * 1.2;
+            break;
+        
+        case(2):
+        case(3):
+            tee = bmr * 1.375;
+            break;
+        case(4):
+        case(5): 
+            tee = bmr * 1.55;
+            break;
+        case(6):
+        case(7):
+        case(8):
+            tee = bmr * 1.725;
+            break;
+        case(9):
+        case(10):
+            tee = bmr * 1.9;
+            break;
+        default:
             
         }
     }
 
-    return bmr * tee / 1000;
+    return tee;
     
 
 };
