@@ -1,7 +1,11 @@
 package com.example.mealprepapp
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.JavascriptInterface
@@ -9,6 +13,9 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewClientCompat
 import java.io.BufferedReader
@@ -80,7 +87,28 @@ class WebAppInterface(private val mContext: Context) {
         val writer = FileOutputStream(File(path, fileName))
         writer.write(fileData.toByteArray())
     }
-}
+    @JavascriptInterface
+    fun makeNotification(Title: String, Message: String, id: Int) {
+        with(NotificationManagerCompat.from(mContext)) {
+            val mBuilder = NotificationCompat.Builder(mContext, "YOUR_CHANNEL_ID")
+                .setSmallIcon(R.drawable.MyPlateLogo) // notification icon
+                .setContentTitle(Title) // title for notification
+                .setContentText(Message)// message for notification
+                .setAutoCancel(true) // clear notification after click\
+                .setPriority(NotificationCompat.PRIORITY_HIGH) //pop up notification
+                //mBuilder.setChannelId()
+            notify(id, mBuilder.build())
+        }
+
+
+
+    }
+
+
+
+    }
+
+
 
 private class LocalContentWebViewClient(private val assetLoader: WebViewAssetLoader) : WebViewClientCompat() {
     override fun shouldInterceptRequest(
