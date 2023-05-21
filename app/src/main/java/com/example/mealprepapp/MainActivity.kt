@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     // All Javascript ran, will be handled by verified by the app, so there shouldn't be any security concerns.
     @RequiresApi(Build.VERSION_CODES.N)
-    @SuppressLint("SetJavaScriptEnabled", "MissingPermission")
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
