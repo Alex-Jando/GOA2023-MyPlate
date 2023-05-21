@@ -58,8 +58,14 @@ function calculateBMR(age, height, weight, pal, is_male) {
     }
 
     return tee;
-    
 };
+
+
+function permute(list, size=list.length) {
+    if (size > list.length) return [];
+    else if (size == 1) return list.map(d=>[d]); 
+    return list.flatMap(d => permute(list.filter(a => a !== d), size - 1).map(item => [d, ...item]));
+}
 
 function calculateMealPlan() {
     meal_plan_stats = {
@@ -93,11 +99,154 @@ function calculateMealPlan() {
         }
     });
 
-    // Get all permutations of valid meals
+    all_valid_meal_plans = permute(all_valid_meals, 3);
 
-    // Generate an accuracy score for each permutation
+    all_valid_meal_plans_accuracy = {};
 
-    // Return the permutations in order of accuracy score
+    all_valid_meal_plans.forEach(meal_plan => {
+
+        total_cals = 0;
+        total_fat = 0;
+        total_protein = 0;
+        total_carb = 0;
+
+        accuracy = 0;
+
+        meal_plan.forEach(meal => {
+            total_cals += meal[Object.keys(meal)[0]].calories
+            total_fat += meal[Object.keys(meal)[0]].fat
+            total_protein += meal[Object.keys(meal)[0]].protein
+            total_carb += meal[Object.keys(meal)[0]].carbs
+        });
+
+        cals_acc = 1 - Math.abs(meal_plan_stats.calories - total_cals) / meal_plan_stats.calories;
+        fat_acc = 1 - Math.abs(meal_plan_stats.fat - total_fat) / meal_plan_stats.fat;
+        protein_acc = 1 - Math.abs(meal_plan_stats.protein - total_protein) / meal_plan_stats.protein;
+        carb_acc = 1 - Math.abs(meal_plan_stats.carb - total_carb) / meal_plan_stats.carb;
+
+        accuracy = (cals_acc + fat_acc + protein_acc + carb_acc) / 4;
+
+        all_valid_meal_plans_accuracy[JSON.stringify(meal_plan)] = accuracy;
+
+    });
+
+    all_valid_meal_plans_accuracy_sorted = Object.keys(all_valid_meal_plans_accuracy);
+
+    all_valid_meal_plans_accuracy_sorted.sort((a, b) => {
+        return all_valid_meal_plans_accuracy[b] - all_valid_meal_plans_accuracy[a];
+    });
+
+    function previousMeal() {
+
+        all_valid_meal_plans_accuracy_sorted = all_valid_meal_plans_accuracy_sorted;
+
+        all_valid_meal_plans_accuracy = all_valid_meal_plans_accuracy;
+
+        meal_index = Number($('#meal').attr('data-index'));
+
+        if (meal_index <= 0) {
+            meal_index = all_valid_meal_plans_accuracy_sorted.length - 1;
+        } else {
+            meal_index -= 1;
+        }
+
+    }
+
+    function nextMeal() {
+
+        all_valid_meal_plans_accuracy_sorted = all_valid_meal_plans_accuracy_sorted;
+
+        all_valid_meal_plans_accuracy = all_valid_meal_plans_accuracy;
+
+        meal_index = Number($('#meal').attr('data-index'));
+
+        if (meal_index <= all_valid_meal_plans_accuracy_sorted.length - 1) {
+            meal_index = 0;
+        } else {
+            meal_index += 1;
+        }
+
+        $('#meal').attr('data-index', meal_index);
+
+        meal_plan = JSON.parse(all_valid_meal_plans_accuracy_sorted[0]);
+
+        meal_plan_data = `<h3>Accuracy: ${(all_valid_meal_plans_accuracy[JSON.stringify(meal_plan)] * 100).toFixed(2)}%</h3><p>`;
+        nutritionals = {'calories': 0, 'protein': 0, 'fat': 0};
+        meal_names = [];
+        meal_plan.forEach(meal => {
+            nutritionals.calories += meal[Object.keys(meal)[0]].calories;
+            nutritionals.protein += meal[Object.keys(meal)[0]].protein;
+            nutritionals.fat += meal[Object.keys(meal)[0]].fat;
+            meal_names.push(Object.keys(meal)[0]);
+        });
+
+        meal_plan_data += meal_names.join(', ') + '.</p><div class="nutrition">';
+
+        meal_plan_data += `<div class="nutritional"><div style="--color: green;" class="circle"></div>${Math.round(nutritionals.protein * 10) / 10}g Protein</div>`;
+
+        meal_plan_data += `<div class="nutritional"><div style="--color: yellow;" class="circle"></div>${Math.round(nutritionals.fat * 10) / 10}g Fat</div>`;
+
+        meal_plan_data += `<div class="nutritional"><div style="--color: red;" class="circle"></div>${Math.round(nutritionals.calories)} Calories</div>`;
+
+        meal_plan_data += '</div></div>';
+
+
+        $('#meal').html(meal_plan_data);
+
+    }
+
+    function chooseMeal() {
+
+    }
+
+    closeModal();
+
+    meal_plan = JSON.parse(all_valid_meal_plans_accuracy_sorted[0]);
+
+    meal_plan_div = `<div class="meal-plan" id="meal" data-index="0"><h3>Accuracy: ${(all_valid_meal_plans_accuracy[JSON.stringify(meal_plan)] * 100).toFixed(2)}%</h3><p>`;
+    nutritionals = {'calories': 0, 'protein': 0, 'fat': 0};
+    meal_names = [];
+    meal_plan.forEach(meal => {
+        nutritionals.calories += meal[Object.keys(meal)[0]].calories;
+        nutritionals.protein += meal[Object.keys(meal)[0]].protein;
+        nutritionals.fat += meal[Object.keys(meal)[0]].fat;
+        meal_names.push(Object.keys(meal)[0]);
+    });
+
+    meal_plan_div += meal_names.join(', ') + '.</p><div class="nutrition">';
+
+    meal_plan_div += `<div class="nutritional"><div style="--color: green;" class="circle"></div>${Math.round(nutritionals.protein * 10) / 10}g Protein</div>`;
+
+    meal_plan_div += `<div class="nutritional"><div style="--color: yellow;" class="circle"></div>${Math.round(nutritionals.fat * 10) / 10}g Fat</div>`;
+
+    meal_plan_div += `<div class="nutritional"><div style="--color: red;" class="circle"></div>${Math.round(nutritionals.calories)} Calories</div>`;
+
+    meal_plan_div += '</div></div>';
+
+
+    $('main').prepend(`<div class="modal">
+        <div class="modal-content-create-plan">
+            <h2>Choose A Meal Plan<div class="close" onclick="closeModal()">✕</div></h2>
+                ${meal_plan_div}
+            <div class="buttons">
+                <button id="prevMeal">Previous</button>
+                <button id="chooseMeal">Choose</button>
+                <button id="nextMeal">Next</button>
+            </div>
+        </div>
+    </div>`);
+
+    $('#prevMeal').click(() => {
+        previousMeal();
+    });
+
+    $('#nextMeal').click(() => {
+        nextMeal();
+    });
+
+    $('#chooseMeal').click(() => {
+        chooseMeal();
+    });
 
 }
 
@@ -234,6 +383,8 @@ function loadMeals(){
 };
 
 $(function(){
+
+    $('main').append(`<button onclick="app.postNotification();">Post Notification</button>`);
 
     touchstartX = 0;
     touchendX = 0;

@@ -1,5 +1,20 @@
 $(function(){
 
+    if (!app.hasNotificationPermission()) {
+
+        app.requestNotificationPermission();
+
+        if (!app.hasNotificationPermission()) {
+
+            app.showToast('Please enable notifications to use the calendar.');
+
+        }
+
+        window.location.href = '/assets/index.html';
+
+    }
+
+
     touchstartX = 0;
     touchendX = 0;
     touchstartY = 0;
