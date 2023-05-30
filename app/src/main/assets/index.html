@@ -6,6 +6,14 @@
     <title>Meal Prep App</title>
     <link rel="stylesheet" type="text/css" href="/assets/index.css" />
     <link rel="stylesheet" type="text/css" href="/assets/common.css" />
+    <script>
+        settings = JSON.parse(app.getLocalFile('settings.json'));
+
+        if (settings.age <= 0 || settings.height <= 0 || settings.weight <= 0) {
+            app.showToast('Please fill out your settings before creating meal plans.')
+            window.location.href = '/assets/settings.html';
+        }
+    </script>
 </head>
 <body>
 

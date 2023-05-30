@@ -49,22 +49,6 @@ class MainActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(mChannel)
         }
 
-        val builder = NotificationCompat.Builder(this, "MyPlateNotificationChannelCalendar")
-            .setSmallIcon(R.drawable.logo)
-            .setContentTitle("title")
-            .setContentText("content")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-        with(NotificationManagerCompat.from(this)) {
-            if (ActivityCompat.checkSelfPermission(
-                    applicationContext,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                notify(SimpleDateFormat("ddHHmmss", Locale.CANADA).format(Date()).toInt(), builder.build())
-            }
-        }
-
         val path = applicationContext.filesDir
 
         val mealPlansFile = File(path, "meal_plans.json")
@@ -78,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         if (!settingsFile.exists()) {
             settingsFile.createNewFile()
             val writer = FileOutputStream(settingsFile)
-            writer.write("{}".toByteArray())
+            writer.write("{\"height\": 0, \"weight\": 0, \"age\": 0, \"is_male\": true}".toByteArray())
         }
 
         val webView: WebView = findViewById(R.id.WebView)
@@ -97,9 +81,18 @@ class MainActivity : AppCompatActivity() {
         webView.loadUrl("https://appassets.androidplatform.net/assets/index.html")
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.N)
     fun sendNotification(title: String, content: String) {
+        val builder = NotificationCompat.Builder(this, "MyPlateNotificationChannelCalendar")
+            .setSmallIcon(R.drawable.logo)
+            .setContentTitle(title)
+            .setContentText(content)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
+        with(NotificationManagerCompat.from(this)) {
+            notify(SimpleDateFormat("ddHHmmss", Locale.CANADA).format(Date()).toInt(), builder.build())
+        }
     }
     private val requestPermissionLauncher =
         registerForActivityResult(

@@ -384,8 +384,6 @@ function loadMeals(){
 
 $(function(){
 
-    $('main').append(`<button onclick="app.postNotification();">Post Notification</button>`);
-
     touchstartX = 0;
     touchendX = 0;
     touchstartY = 0;
