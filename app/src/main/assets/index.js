@@ -60,12 +60,30 @@ function calculateBMR(age, height, weight, pal, is_male) {
     return tee;
 };
 
-
-function permute(list, size=list.length) {
-    if (size > list.length) return [];
-    else if (size == 1) return list.map(d=>[d]); 
-    return list.flatMap(d => permute(list.filter(a => a !== d), size - 1).map(item => [d, ...item]));
-}
+function getCombinations(sourceArray, comboLength) {
+    const sourceLength = sourceArray.length;
+    if (comboLength > sourceLength) return [];
+  
+    const combos = [];
+  
+    const makeNextCombos = (workingCombo, currentIndex, remainingCount) => {
+      const oneAwayFromComboLength = remainingCount == 1;
+  
+      for (let sourceIndex = currentIndex; sourceIndex < sourceLength; sourceIndex++) {
+        const next = [ ...workingCombo, sourceArray[sourceIndex] ];
+  
+        if (oneAwayFromComboLength) {
+          combos.push(next);
+        }
+        else {
+          makeNextCombos(next, sourceIndex + 1, remainingCount - 1);
+        }
+          }
+    }
+  
+    makeNextCombos([], 0, comboLength);
+    return combos;
+  }
 
 function calculateMealPlan() {
     meal_plan_stats = {
@@ -99,7 +117,7 @@ function calculateMealPlan() {
         }
     });
 
-    all_valid_meal_plans = permute(all_valid_meals, 3);
+    all_valid_meal_plans = getCombinations(all_valid_meals, 3);
 
     all_valid_meal_plans_accuracy = {};
 
@@ -150,25 +168,9 @@ function calculateMealPlan() {
             meal_index -= 1;
         }
 
-    }
-
-    function nextMeal() {
-
-        all_valid_meal_plans_accuracy_sorted = all_valid_meal_plans_accuracy_sorted;
-
-        all_valid_meal_plans_accuracy = all_valid_meal_plans_accuracy;
-
-        meal_index = Number($('#meal').attr('data-index'));
-
-        if (meal_index <= all_valid_meal_plans_accuracy_sorted.length - 1) {
-            meal_index = 0;
-        } else {
-            meal_index += 1;
-        }
-
         $('#meal').attr('data-index', meal_index);
 
-        meal_plan = JSON.parse(all_valid_meal_plans_accuracy_sorted[0]);
+        meal_plan = JSON.parse(all_valid_meal_plans_accuracy_sorted[meal_index]);
 
         meal_plan_data = `<h3>Accuracy: ${(all_valid_meal_plans_accuracy[JSON.stringify(meal_plan)] * 100).toFixed(2)}%</h3><p>`;
         nutritionals = {'calories': 0, 'protein': 0, 'fat': 0};
@@ -190,12 +192,66 @@ function calculateMealPlan() {
 
         meal_plan_data += '</div></div>';
 
-
         $('#meal').html(meal_plan_data);
 
     }
 
+    function nextMeal() {
+
+        all_valid_meal_plans_accuracy_sorted = all_valid_meal_plans_accuracy_sorted;
+
+        all_valid_meal_plans_accuracy = all_valid_meal_plans_accuracy;
+
+        meal_index = Number($('#meal').attr('data-index'));
+
+        if (meal_index >= all_valid_meal_plans_accuracy_sorted.length - 1) {
+            meal_index = 0;
+        } else {
+            meal_index += 1;
+        }
+
+        $('#meal').attr('data-index', meal_index);
+
+        meal_plan = JSON.parse(all_valid_meal_plans_accuracy_sorted[meal_index]);
+
+        meal_plan_data = `<h3>Accuracy: ${(all_valid_meal_plans_accuracy[JSON.stringify(meal_plan)] * 100).toFixed(2)}%</h3><p>`;
+        nutritionals = {'calories': 0, 'protein': 0, 'fat': 0};
+        meal_names = [];
+        meal_plan.forEach(meal => {
+            nutritionals.calories += meal[Object.keys(meal)[0]].calories;
+            nutritionals.protein += meal[Object.keys(meal)[0]].protein;
+            nutritionals.fat += meal[Object.keys(meal)[0]].fat;
+            meal_names.push(Object.keys(meal)[0]);
+        });
+
+        meal_plan_data += meal_names.join(', ') + '.</p><div class="nutrition">';
+
+        meal_plan_data += `<div class="nutritional"><div style="--color: green;" class="circle"></div>${Math.round(nutritionals.protein * 10) / 10}g Protein</div>`;
+
+        meal_plan_data += `<div class="nutritional"><div style="--color: yellow;" class="circle"></div>${Math.round(nutritionals.fat * 10) / 10}g Fat</div>`;
+
+        meal_plan_data += `<div class="nutritional"><div style="--color: red;" class="circle"></div>${Math.round(nutritionals.calories)} Calories</div>`;
+
+        meal_plan_data += '</div></div>';
+
+        $('#meal').html(meal_plan_data);
+    }
+
     function chooseMeal() {
+
+        all_valid_meal_plans_accuracy_sorted = all_valid_meal_plans_accuracy_sorted;
+
+        meal_plan = JSON.parse(all_valid_meal_plans_accuracy_sorted[Number($('#meal').attr('data-index'))]);
+
+        current_meal_plans = JSON.parse(app.getLocalFile('meal_plans.json'));
+
+        current_meal_plans[$('#mealPlanName').val()] = meal_plan;
+
+        app.saveLocalFile(JSON.stringify(current_meal_plans), 'meal_plans.json');
+
+        app.showToast('Meal Plan Saved');
+
+        window.location.href = '/assets/index.html';
 
     }
 
@@ -229,6 +285,7 @@ function calculateMealPlan() {
             <h2>Choose A Meal Plan<div class="close" onclick="closeModal()">✕</div></h2>
                 ${meal_plan_div}
             <div class="buttons">
+                <input type="text" id="mealPlanName" class="input-text" value="New Meal Plan">
                 <button id="prevMeal">Previous</button>
                 <button id="chooseMeal">Choose</button>
                 <button id="nextMeal">Next</button>
@@ -282,10 +339,14 @@ function showCreateMealPlan() {
         <div class="modal-content-create-plan">
             <h2>Create A Meal Plan<div class="close" onclick="closeModal()">✕</div></h2>
 
-            <label for="activity">Activity Level: 1 (1-5)</label>
-            <input type="number" name="activity" id="activity" class="input-number">
+            <form onsubmit="setActivityLevel(); return false;">
 
-            <button onclick="setActivityLevel();">Apply</button>
+                <label for="activity">Activity Level: 1 (1-5)</label>
+                <input type="number" name="activity" id="activity" class="input-number">
+
+                <button onclick="setActivityLevel();" type="button">Apply</button>
+
+            </form>
 
             <ul id="recommended" class="stat-list">
                 <li>BMR: <span class="stat">${bmr}</span></li>
@@ -294,29 +355,33 @@ function showCreateMealPlan() {
                 <li>Recommended Carbs: <span class="stat">${(bmr*0.45/4).toFixed(2)}g-${(bmr*0.65/4).toFixed(2)}g</span></li>
             </ul>
 
-            <label for="calories">Desired Calories</label>
-            <input type="number" name="calories" id="calories" class="input-number">
+            <form onsubmit="calculateMealPlan(); return false;">
 
-            <label for="fat">Desired Fat (grams)</label>
-            <input type="number" name="fat" id="fat" class="input-number">
+                <label for="calories">Desired Calories</label>
+                <input type="number" name="calories" id="calories" class="input-number">
 
-            <label for="protein">Desired Protein (grams)</label>
-            <input type="number" name="protein" id="protein" class="input-number">
+                <label for="fat">Desired Fat (grams)</label>
+                <input type="number" name="fat" id="fat" class="input-number">
 
-            <label for="carb">Desired Carbs (grams)</label>
-            <input type="number" name="carb" id="carb" class="input-number">
+                <label for="protein">Desired Protein (grams)</label>
+                <input type="number" name="protein" id="protein" class="input-number">
 
-            <h3>Dietary Restrictions</h3>
+                <label for="carb">Desired Carbs (grams)</label>
+                <input type="number" name="carb" id="carb" class="input-number">
 
-            <ul>
-                <li><input type="checkbox" name="vegan" id="vegan"> Vegan</li>
-                <li><input type="checkbox" name="vegetarian" id="vegetarian"> Vegetarian</li>
-                <li><input type="checkbox" name="seafood" id="seafood"> Seafood</li>
-                <li><input type="checkbox" name="nuts" id="nuts"> Nuts</li>
-                <li><input type="checkbox" name="lactose" id="lactose"> Lactose</li>
-            </ul>
+                <h3>Dietary Restrictions</h3>
 
-            <button onclick="calculateMealPlan();">Calculate</button>
+                <ul>
+                    <li><input type="checkbox" name="vegan" id="vegan"> Vegan</li>
+                    <li><input type="checkbox" name="vegetarian" id="vegetarian"> Vegetarian</li>
+                    <li><input type="checkbox" name="seafood" id="seafood"> Seafood</li>
+                    <li><input type="checkbox" name="nuts" id="nuts"> Nuts</li>
+                    <li><input type="checkbox" name="lactose" id="lactose"> Lactose</li>
+                </ul>
+
+                <button onclick="calculateMealPlan();" type="button">Calculate</button>
+
+            </form>
 
         </div>
     </div>`);
@@ -326,21 +391,28 @@ function showMealPlan(meal_plan_name) {
 
     meal_plans = JSON.parse(app.getLocalFile('meal_plans.json'));
 
-    meal_plans = {}
-
     meal_plan_modal = `<div class="modal"><div class="modal-content-show-plan"><h2>${meal_plan_name}<div class="close" onclick="closeModal()">✕</div></h2><div class="divider"></div>`;
 
+    // <li>Cost: $${meal[Object.keys(meal)[0]].cost}</li>
+    // <li>Time: ${meal[Object.keys(meal)[0]].time} minutes</li>
+
     meal_plans[meal_plan_name].forEach(meal => {
+        ingredients = '';
+        meal[Object.keys(meal)[0]].ingredients.forEach(ingredient => {
+            ingredients += `<li>${ingredient}</li>`
+        })
         meal_plan_modal += `<h3>${Object.keys(meal)[0]}</h3><ul>
         <li>Calories: ${meal[Object.keys(meal)[0]].calories}</li>
         <li>Protein: ${meal[Object.keys(meal)[0]].protein}g</li>
         <li>Fat: ${meal[Object.keys(meal)[0]].fat}g</li>
         <li>Carbs: ${meal[Object.keys(meal)[0]].carbs}g</li>
-        <li>Cost: $${meal[Object.keys(meal)[0]].cost}</li>
-        <li>Time: ${meal[Object.keys(meal)[0]].time} minutes</li>
         </ul>
         <h4>Recipe:</h4>
         <p>${meal[Object.keys(meal)[0]].recipe}</p>
+        <h4>Ingredients:</h4>
+        <ul>
+            ${ingredients}
+        </ul>
         <div class="divider"></div>`;
     });
 
