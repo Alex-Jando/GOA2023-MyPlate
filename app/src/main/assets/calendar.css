@@ -1,0 +1,93 @@
+.modal {
+    backdrop-filter: blur(2px);
+    position: fixed;
+    width: inherit;
+    height: inherit;
+}
+
+.modal::before {
+    content: "";
+    position: fixed;
+    width: inherit;
+    height: inherit;
+    background-color: rgba(0, 200, 255, 0.75);
+}
+
+.modal-content-schedule-meal-plan {
+    border-radius: 1em;
+    margin: 2em;
+    width: calc(100% - 4em);
+    height: calc(100% - 4em - 7.5vh);
+    position: fixed;
+    overflow: scroll;
+    background-color: white;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content-schedule-meal-plan h2 {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.modal-content-schedule-meal-plan button {
+    margin-top: 1em;
+    width: 6em;
+    height: 3em;
+    border-radius: 1.5em;
+    border: none;
+    background-color: #eee;
+    font-size: 1.25em;
+    align-self: center;
+}
+
+.close {
+    margin-top: 1em;
+    font-size: 1rem;
+    height: 1.5em;
+    width: 1.5em;
+    border-radius: 50%;
+    margin-left: calc(50% - 1.5em);
+}
+
+.close:active, .close:hover, .close:focus {
+    background-color: #eee;
+}
+
+.input-text {
+    margin: 1em;
+    width: 60%;
+    border: none;
+    outline: 2px solid #eee;
+    text-align: center;
+    font-size: 1em;
+    border-radius: 0.75em;
+    padding: 0.25em;
+    align-self: center;
+}
+
+.input-text:focus {
+    outline: 3px solid #ccc;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+.schedule-meal, .scheduled-meal {
+    margin-top: 2.5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 20%;
+    width: 90%;
+    background-color: #eee;
+    border-radius: 1em;
+    padding: 0.5em 1em;
+}

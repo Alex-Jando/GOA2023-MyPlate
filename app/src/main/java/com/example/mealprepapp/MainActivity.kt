@@ -2,14 +2,18 @@ package com.example.mealprepapp
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.webkit.JavascriptInterface
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -18,7 +22,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -63,6 +66,13 @@ class MainActivity : AppCompatActivity() {
             settingsFile.createNewFile()
             val writer = FileOutputStream(settingsFile)
             writer.write("{\"height\": 0, \"weight\": 0, \"age\": 0, \"is_male\": true}".toByteArray())
+        }
+
+        val calendarFile = File(path, "calendar.json")
+        if (!calendarFile.exists()) {
+            calendarFile.createNewFile()
+            val writer = FileOutputStream(calendarFile)
+            writer.write("{}".toByteArray())
         }
 
         val webView: WebView = findViewById(R.id.WebView)
