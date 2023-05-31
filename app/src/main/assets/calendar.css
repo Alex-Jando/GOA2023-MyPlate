@@ -26,6 +26,13 @@
     flex-direction: column;
 }
 
+@media screen and (orientation:landscape) {
+    .modal-content-schedule-meal-plan {
+        width: calc(100% - 4em);
+        height: calc(100% - 4em - 20vh);
+    }       
+}
+
 .modal-content-schedule-meal-plan h2 {
     margin-bottom: 1em;
     text-align: center;

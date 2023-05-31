@@ -9,6 +9,7 @@ h1 {
 img {
     width: 80%;
     height: auto;
+    margin-bottom: 1.5em;
 }
 
 section {
@@ -34,5 +35,6 @@ section {
 }
 
 main {
-    margin: 1.5em;
+    padding: 1.5em;
+    max-width: 100%;
 }

@@ -327,6 +327,8 @@ function setActivityLevel() {
     <li>Recommended Protein: <span class="stat">${(bmr*0.1/4).toFixed(2)}g-${(bmr*0.35/4).toFixed(2)}g</span></li>
     <li>Recommended Carbs: <span class="stat">${(bmr*0.45/4).toFixed(2)}g-${(bmr*0.65/4).toFixed(2)}g</span></li>`);
 
+    $('#activity-label').html(`Activity Level: ${lvl} (1-5)`);
+
 }
 
 function showCreateMealPlan() {
@@ -341,7 +343,7 @@ function showCreateMealPlan() {
 
             <form onsubmit="setActivityLevel(); return false;">
 
-                <label for="activity">Activity Level: 1 (1-5)</label>
+                <label for="activity" id="activity-label">Activity Level: 1 (1-5)</label>
                 <input type="number" name="activity" id="activity" class="input-number">
 
                 <button onclick="setActivityLevel();" type="button">Apply</button>
