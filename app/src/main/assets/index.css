@@ -180,6 +180,15 @@ main {
     justify-self: flex-end;
 }
 
+@media screen and (orientation:landscape) {
+    .modal-content-create-plan .buttons {
+        padding-top: 25%;
+    }
+    .modal-content-create-plan .meal-plan {
+        min-height: 75%;
+    }
+}
+
 .modal-content-create-plan .meal-plan {
     align-self: center;
 }
