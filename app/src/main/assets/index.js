@@ -96,7 +96,10 @@ function calculateMealPlan() {
             vegetarian: $('#vegetarian').is(':checked'),
             seafood: $('#seafood').is(':checked'),
             nuts: $('#nuts').is(':checked'),
-            lactose: $('#lactose').is(':checked')
+            lactose: $('#lactose').is(':checked'),
+            celiac: $('#celiac').is(':checked'),
+            halal: $('#halal').is(':checked'),
+            kosher: $('#kosher').is(':checked')
         }
     }
 
@@ -379,6 +382,9 @@ function showCreateMealPlan() {
                     <li><input type="checkbox" name="seafood" id="seafood"> Seafood</li>
                     <li><input type="checkbox" name="nuts" id="nuts"> Nuts</li>
                     <li><input type="checkbox" name="lactose" id="lactose"> Lactose</li>
+                    <li><input type="checkbox" name="celiac" id="celiac"> Celiac</li>
+                    <li><input type="checkbox" name="halal" id="halal"> Halal</li>
+                    <li><input type="checkbox" name="kosher" id="kosher"> Kosher</li>
                 </ul>
 
                 <button onclick="calculateMealPlan();" type="button">Calculate</button>

@@ -2,18 +2,13 @@ package com.example.mealprepapp
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
-import android.icu.util.Calendar
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.SystemClock
 import android.webkit.JavascriptInterface
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -22,19 +17,22 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewClientCompat
+import kotlinx.coroutines.delay
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.TimeUnit
+
 
 class MainActivity : AppCompatActivity() {
-
     // All Javascript ran, will be handled by verified by the app, so there shouldn't be any security concerns.
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetJavaScriptEnabled")
@@ -79,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         webView.settings.javaScriptEnabled = true
 
-        webView.addJavascriptInterface(WebAppInterface(this, this.requestPermissionLauncher), "app")
+        webView.addJavascriptInterface(WebAppInterface(this, requestPermissionLauncher, ::sendNotification), "app")
 
         val assetLoader = WebViewAssetLoader.Builder()
             .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(this))
@@ -110,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         ) {}
 
 }
-class WebAppInterface(private val mContext: Context, private val mRequestPermissionLauncher: ActivityResultLauncher<String>) {
+class WebAppInterface(private val mContext: Context, private val mRequestPermissionLauncher: ActivityResultLauncher<String>, private val mSendNotification: (title: String, content: String) -> Unit) {
     @JavascriptInterface
     fun showToast(toast: String) {
         Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show()
@@ -132,8 +130,11 @@ class WebAppInterface(private val mContext: Context, private val mRequestPermiss
         writer.write(fileData.toByteArray())
     }
     @JavascriptInterface
-    fun postNotification() {
-
+    fun timerForMealCalendar(mealPlanName: String, alertIn: Long) {
+        Thread {
+            Thread.sleep(alertIn)
+            mSendNotification("Meal Time!", "It's time for you to eat $mealPlanName")
+        }.start()
     }
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @JavascriptInterface
@@ -164,7 +165,6 @@ class WebAppInterface(private val mContext: Context, private val mRequestPermiss
         }
     }
 }
-
 private class LocalContentWebViewClient(private val assetLoader: WebViewAssetLoader) : WebViewClientCompat() {
     override fun shouldInterceptRequest(
         view: WebView,

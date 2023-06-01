@@ -40,6 +40,8 @@ function scheduleMealPlanSubmit() {
 
     closeModal();
 
+    app.timerForMealCalendar(mealPlanName, date.getTime() - Date.now());
+
     app.showToast('Meal Plan Scheduled!');
 
     window.location.href = '/assets/calendar.html';
